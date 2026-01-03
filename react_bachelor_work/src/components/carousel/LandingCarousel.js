@@ -1,18 +1,11 @@
 import { NavLink } from "react-router-dom";
 import { FUNDRAISINGS_ROUTE, SIGNUP_ROUTE } from "../../utils/constants";
 import { Carousel, CarouselCaption, CarouselItem, Container } from "react-bootstrap";
-import { useState } from "react";
 
 function LandingCarousel(props) {
 
-    const [index, setIndex] = useState(0);
-
-    const handleSelect = (selectedIndex) => {
-        setIndex(selectedIndex);
-    };
-
     return (
-        <Carousel id="myCarousel" data-bs-ride="carousel" activeIndex={index} onSelect={handleSelect}>
+        <Carousel id="myCarousel" >
             <CarouselItem >
                 <svg className="bd-placeholder-img img-uaf" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><image href={props.uaf_help} alt="Help" width="100%" height="100%" /></svg>
                 <Container >

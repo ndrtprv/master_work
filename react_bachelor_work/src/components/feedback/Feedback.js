@@ -83,7 +83,7 @@ function Feedback(props) {
                 </Form.Group>
 
                 <Form.Group className="mt-3 registration-field" >
-                    <Form.Label><b><span style={{color: "red"}}>*</span></b> - обов'язково до заповнення</Form.Label>
+                    <p to="submit"><b><span style={{color: "red"}}>*</span></b> - обов'язково до заповнення</p>
                 </Form.Group>
             </Form>
         </Container>
