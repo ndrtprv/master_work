@@ -23,48 +23,46 @@ function NavigationPanel(props) {
 
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="navbar-nav me-auto mx-auto">
-                        <NavDropdown title="Про нас" className="nav-item dropdown">
-                            {Object.entries(props.data1).map(([path, label]) =>
-                                <NavLink key={path} to={path} className="dropdown-item lat">{label}</NavLink>
-                            )}
-                        </NavDropdown>
-                        <NavDropdown title="Допомога" className="nav-item dropdown">
-                            {Object.entries(props.data2).map(([path, label]) =>
-                                <NavLink key={path} to={path} className="dropdown-item lat">{label}</NavLink>
-                            )}
-                        </NavDropdown>
-                        {Object.entries(props.data3).map(([path, label]) =>
+                        {Object.entries(props.data_folded).map(([key, values]) => 
+                            <NavDropdown key={key} title={key} className="nav-item dropdown">
+                                {Object.entries(values).map(([path, label]) =>
+                                    <NavLink key={path} to={path} className="dropdown-item lat">{label}</NavLink>
+                                )}
+                            </NavDropdown>
+                        )}
+                        {Object.entries(props.data).map(([path, label]) =>
                             <NavLink key={path} to={path} className="nav-link lat">{label}</NavLink>
                         )}
                     </Nav>
-                    {
-                        isLoggedIn ? 
-                        <Nav className="nav navbar-right">
-                            <NavLink to={USER_ROUTE} className="nav-link lat">
-                                <Avatar alt="Профіль" src={(avatar && avatar.data) ? `data:${avatar.contentType};base64,${avatar.data}` : props.avatar} size="2.4em" />
-                            </NavLink>
-                            {
-                                isAdmin ? 
-                                <NavLink to={ADMIN_ROUTE} className="nav-link lat">
-                                    <Button type="button" className="btn btn-primary my-2 rob-btn" >Адмін панель</Button>
+                    <Nav className="nav navbar-right">
+                        { isLoggedIn ?
+                            <>
+                                <NavLink to={USER_ROUTE} className="nav-link lat">
+                                    <Avatar alt="Профіль" src={(avatar && avatar.data) ? `data:${avatar.contentType};base64,${avatar.data}` : props.avatar} size="2.4em" />
                                 </NavLink>
-                                : 
-                                <></>
-                            }
-                            <NavLink to={LANDING_ROUTE} className="nav-link lat">
-                                <Button type="button" className="btn btn-warning my-2 rob-btn" onClick={handleLogout}>Вийти</Button>
-                            </NavLink>
-                        </Nav>
-                        :
-                        <Nav className="nav navbar-right">
-                            <NavLink to={LOGIN_ROUTE} className="nav-link lat">
-                                <Button type="button" className="btn btn-outline-light me-2 my-2 rob-btn">Увійти</Button>
-                            </NavLink>
-                            <NavLink to={SIGNUP_ROUTE} className="nav-link lat">
-                                <Button type="button" className="btn btn-warning my-2 rob-btn">Зареєструватися</Button>
-                            </NavLink>
-                        </Nav>    
-                    }
+                                {
+                                    isAdmin ? 
+                                    <NavLink to={ADMIN_ROUTE} className="nav-link lat">
+                                        <Button type="button" className="btn btn-primary my-2 rob-btn" >Адмін панель</Button>
+                                    </NavLink>
+                                    : 
+                                    <></>
+                                }
+                                <NavLink to={LANDING_ROUTE} className="nav-link lat">
+                                    <Button type="button" className="btn btn-warning my-2 rob-btn" onClick={handleLogout}>Вийти</Button>
+                                </NavLink>
+                            </>
+                            :
+                            <>
+                                <NavLink to={LOGIN_ROUTE} className="nav-link lat">
+                                    <Button type="button" className="btn btn-outline-light me-2 my-2 rob-btn">Увійти</Button>
+                                </NavLink>
+                                <NavLink to={SIGNUP_ROUTE} className="nav-link lat">
+                                    <Button type="button" className="btn btn-warning my-2 rob-btn">Зареєструватися</Button>
+                                </NavLink>
+                            </>
+                        }
+                    </Nav>
                 </Navbar.Collapse>
             </Container>
         </Navbar>

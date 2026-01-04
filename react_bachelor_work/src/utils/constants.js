@@ -1,16 +1,17 @@
 import { Link } from "react-router-dom";
 
-export const paths_data1 = {
-    '/about': 'Про фонд',
-    '/staff': 'Склад фонду'
+export const paths_data_folded = {
+    'Про нас': {
+                    '/about': 'Про фонд',
+                    '/staff': 'Склад фонду'
+                },
+    'Допомога': {
+                    '/notices': 'Оголошення',
+                    '/fundraisings': 'Збори'
+                }
 };
 
-export const paths_data2 = {
-    '/notices': 'Оголошення',
-    '/fundraisings': 'Збори'
-};
-
-export const paths_data3 = {
+export const paths_data = {
     '/results': 'Звіти',
     '/contacts': 'Контакти',
     '/faq': 'FAQ'
@@ -87,4 +88,3 @@ export const media_paths = {
     'fab fa-linkedin': 'https://www.linkedin.com/in/andrii-toporov-465829264/',
     'fab fa-github': 'https://github.com/ndrtprv'
 };
-

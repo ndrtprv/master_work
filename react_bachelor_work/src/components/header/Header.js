@@ -8,7 +8,7 @@ function Header(props) {
 
     return (
         <header className="sticky-top">
-            <NavigationPanel data1={props.data1} data2={props.data2} data3={props.data3} brand={brand} avatar={avatar} />
+            <NavigationPanel data_folded={props.data_folded} data={props.data} brand={brand} avatar={avatar} />
         </header>
     );
 }
