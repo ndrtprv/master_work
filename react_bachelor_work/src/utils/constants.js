@@ -88,4 +88,3 @@ export const media_paths = {
     'fab fa-github': 'https://github.com/ndrtprv'
 };
 
-export const button_paths = ['/login', '/signup'];

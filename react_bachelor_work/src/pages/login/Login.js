@@ -1,56 +1,12 @@
-import { useEffect, useState } from 'react';
-import {useNavigate} from 'react-router-dom';
-import { Button, Form } from 'react-bootstrap';
-import axios from 'axios';
-import './Login.css';
-import { Container} from 'react-bootstrap';
+import { Button, Form, Container } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
-import { SIGNUP_ROUTE, FORGOT_ROUTE, USER_ROUTE } from '../../utils/constants';
+import { SIGNUP_ROUTE, FORGOT_ROUTE } from '../../utils/constants';
+import './Login.css';
+import { useLoginLogic } from './useLogin';
 
 function Login() {
 
-    const navigate = useNavigate();
-
-    const [formData, setFormData] = useState({
-        login: "",
-        password: ""
-    });
-
-    const { login, password } = formData;
-
-    const onChange = (e) =>
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-
-    axios.defaults.withCredentials = true;
-    useEffect(() => {
-        axios.get(process.env.REACT_APP_API_URL + 'user/nav')
-        .then(res => {
-            if (res.data.status) {
-                navigate(USER_ROUTE);
-            }
-        }).catch(err => {
-            alert(err.message);
-        })
-    });
-
-    const logIn = async (e) => {
-        e.preventDefault();
-        try {
-            await axios.post(process.env.REACT_APP_API_URL + 'user/login', 
-                {
-                    login, password
-                }
-            ).then(response => {
-                if (response.data.status) {
-                    navigate(USER_ROUTE);
-                }
-            }).catch(err => {
-                alert(err.message);
-            });
-        } catch (e) {
-            alert(e.response.data.message);
-        }
-    }
+    const { login, password, onChange, logIn } = useLoginLogic();
 
     return (
         <main style={{display: 'inline-flex', flexDirection: 'column'}} >

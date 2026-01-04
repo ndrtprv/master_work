@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import { NavLink } from "react-router-dom";
 import './Landing.css';
 import uaf_help from '../../resources/uaf_help.jpg';
@@ -34,8 +34,8 @@ function Landing(props) {
   return (
     <main>
       <LandingCarousel uaf_help={uaf_help} humanitarian={humanitarian} volunteer={volunteer} />
-      <div className="container marketing">
-        <div className="row featurette start_elem">
+      <Container className="marketing">
+        <div className="row featurette mx-1">
           <div className="col-md-7 txt_field">
             <h2 className="featurette-heading lat-h2">Про благодійний фонд</h2>
             <p className="lead">"ValorAid Network" - це благодійний фонд, який об'єднує зусилля для надання підтримки на передовій лінії ЗСУ та надання гуманітарної допомоги тим, хто постраждав від наслідків конфлікту. Наш фонд зобов'язаний підтримувати і вдягати героїв на фронті та протягом мирних днів надавати допомогу потребуючим для відновлення життя.</p>
@@ -50,7 +50,7 @@ function Landing(props) {
           </div>
         </div>
         <hr className="featurette-divider"/>
-        <div className="row">
+        <div className="row mx-1">
           <h2 className="featurette-heading lat-h2">Склад благодійного фонду</h2>
           {admins.map((admin, index) =>
             <div className="col-lg-4" key={index}>
@@ -66,7 +66,7 @@ function Landing(props) {
           )}
         </div>
         <hr className="featurette-divider"/>
-        <div className="row featurette">
+        <div className="row featurette mx-1">
           <div className="col-md-7 order-md-2 txt_field">
             <h2 className="featurette-heading lat-h2">Збори</h2>
             <p className="lead">Місце, де ви можете долучитися до нашої місії та внести свій внесок у підтримку ЗСУ та допомогу тим, хто постраждав від війни. Тут ви зможете знайти різноманітні можливості пожертвувань та долучитися до наших проектів для спільного досягнення позитивних змін.</p>
@@ -81,7 +81,7 @@ function Landing(props) {
           </div>
         </div>
         <hr className="featurette-divider"/>
-        <div className="row featurette">
+        <div className="row featurette mx-1">
           <div className="col-md-7 txt_field">
             <h2 className="featurette-heading lat-h2">Звіти</h2>
             <p className="lead">Ми ділимося докладними звітами про використання пожертвувань та реалізовані проекти. Тут ви зможете дізнатися, як ваша підтримка сприяє покращенню життя воїнів ЗСУ та тих, хто потерпів від війни, і бачити конкретні результати нашої спільної діяльності.</p>
@@ -96,10 +96,10 @@ function Landing(props) {
           </div>
         </div>
         <hr className="featurette-divider"/>
-        <div className="row featurette">
+        <div className="row featurette mx-1">
           <Feedback isSmall={false} headerFeedback={headerFeedback} textFeedback={textFeedback} classNameContainer={classNameContainer} classNameForm={classNameForm} />
         </div>
-      </div>
+      </Container>
     </main>
   );
 }

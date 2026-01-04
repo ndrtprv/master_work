@@ -1,51 +1,20 @@
+import { useContext } from 'react';
+import { UserContext } from '../../../context/UserContext';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { LANDING_ROUTE, USER_ROUTE, LOGIN_ROUTE, SIGNUP_ROUTE, ADMIN_ROUTE } from '../../../utils/constants';
 import { Container, Nav, Navbar, NavDropdown, Button } from 'react-bootstrap';
-import axios from 'axios';
 import Avatar from 'react-avatar';
-import { useEffect, useState } from 'react';
 
 function NavigationPanel(props) {
 
     const navigate = useNavigate();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(false);
-    const [avatar, setAvatar] = useState(props.avatar);
-
-    axios.defaults.withCredentials = true;
-    useEffect(() => {
-        axios.get(process.env.REACT_APP_API_URL + 'user/nav')
-        .then(res => {
-            if (res.data.status) {
-                setIsLoggedIn(res.data.status);
-
-                if (res.data.isAdmin) {
-                    setIsAdmin(res.data.isAdmin)
-                }
-
-                if (res.data.portrait !== null) {
-                    setAvatar(res.data.portrait);
-                }
-            } else {
-                setIsLoggedIn(false);
-                setIsAdmin(false);
-            }
-        }).catch(err => {
-            console.log(err.message);
-        })
-    });
     
-    const logOut = () => {
-        axios.get('http://localhost:3003/user/logout')
-        .then(res => {
-            if (res.data.status) {
-                navigate(LANDING_ROUTE);
-            }
-        }).catch(e => {
-            console.log(e);
-        })
-    }
+    const { isLoggedIn, isAdmin, avatar, logOut } = useContext(UserContext); 
 
+    const handleLogout = () => {
+        logOut(navigate);
+    }
+    
     return (
         <Navbar collapseOnSelect expand="lg" className="navbar-dark bg-dark" aria-label="navbar">
             <Container className="container-fluid">
@@ -72,7 +41,7 @@ function NavigationPanel(props) {
                         isLoggedIn ? 
                         <Nav className="nav navbar-right">
                             <NavLink to={USER_ROUTE} className="nav-link lat">
-                                <Avatar alt="Профіль" src={avatar !== props.avatar ? `data:${avatar.contentType};base64,${avatar.data}` : props.avatar} size="2.4em" />
+                                <Avatar alt="Профіль" src={(avatar && avatar.data) ? `data:${avatar.contentType};base64,${avatar.data}` : props.avatar} size="2.4em" />
                             </NavLink>
                             {
                                 isAdmin ? 
@@ -83,7 +52,7 @@ function NavigationPanel(props) {
                                 <></>
                             }
                             <NavLink to={LANDING_ROUTE} className="nav-link lat">
-                                <Button type="button" className="btn btn-warning my-2 rob-btn" onClick={logOut}>Вийти</Button>
+                                <Button type="button" className="btn btn-warning my-2 rob-btn" onClick={handleLogout}>Вийти</Button>
                             </NavLink>
                         </Nav>
                         :
