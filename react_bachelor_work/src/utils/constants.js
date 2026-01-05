@@ -1,5 +1,9 @@
 import { Link } from "react-router-dom";
 
+import about_fund from '../resources/about_fund.jpg';
+import fundraise from '../resources/fundraise.jpg';
+import results from '../resources/results.jpg';
+
 export const paths_data_folded = {
     'Про нас': {
                     '/about': 'Про фонд',
@@ -32,6 +36,36 @@ export const SIGNUP_ROUTE = '/signup';
 export const CONFIRM_ROUTE = '/confirm/:token';
 export const FORGOT_ROUTE = '/forgotPassword';
 export const RESET_ROUTE = '/resetPassword/:token';
+
+export const landing_elements = [
+    {
+        heading: "Про благодійний фонд",
+        text: <p className="lead">"ValorAid Network" - це благодійний фонд, який об'єднує зусилля для надання підтримки на передовій 
+        лінії ЗСУ та надання гуманітарної допомоги тим, хто постраждав від наслідків конфлікту. Наш фонд зобов'язаний підтримувати 
+        і вдягати героїв на фронті та протягом мирних днів надавати допомогу потребуючим для відновлення життя.</p>,
+        route: ABOUT_ROUTE,
+        button_title: "Докладніше",
+        image_path: about_fund
+    },
+    {
+        heading: "Збори",
+        text: <p className="lead">Місце, де ви можете долучитися до нашої місії та внести свій внесок у підтримку ЗСУ та допомогу тим, 
+        хто постраждав від війни. Тут ви зможете знайти різноманітні можливості пожертвувань та долучитися до наших проектів для 
+        спільного досягнення позитивних змін.</p>,
+        route: FUNDRAISINGS_ROUTE,
+        button_title: "Актуальні збори",
+        image_path: fundraise
+    },
+    {
+        heading: "Звіти",
+        text: <p className="lead">Ми ділимося докладними звітами про використання пожертвувань та реалізовані проекти. Тут ви зможете 
+        дізнатися, як ваша підтримка сприяє покращенню життя воїнів ЗСУ та тих, хто потерпів від війни, і бачити конкретні результати 
+        нашої спільної діяльності.</p>,
+        route: RESULTS_ROUTE,
+        button_title: "Усі звіти",
+        image_path: results
+    }
+]
 
 export const members = {
     "Андрій Топоров": "Голова благодійного фонду.",
