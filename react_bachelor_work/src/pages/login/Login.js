@@ -28,13 +28,13 @@ function Login() {
                 </Button>
 
                 <Form.Group className="mt-3 registration-field" >
-                    <Form.Label><b><span style={{color: "red"}}>*</span></b> - обов'язково до заповнення</Form.Label>
+                    <p className='my-1'><b><span style={{color: "red"}}>*</span></b> - обов'язково до заповнення</p>
                 </Form.Group>
             </Form>
             
             <Container style={{backgroundColor: 'beige', borderRadius: '0.5em', display: 'inline-flex', flexDirection: 'column'}} >
-                <p><NavLink to={FORGOT_ROUTE} >Забули пароль?</NavLink></p>
-                <p>Не маєте користувача? <NavLink to={SIGNUP_ROUTE} >Зареєструватися</NavLink></p>
+                <p className="text-center my-1"><NavLink to={FORGOT_ROUTE} >Забули пароль?</NavLink></p>
+                <p className="text-center my-1">Не маєте користувача? <NavLink to={SIGNUP_ROUTE} >Зареєструватися</NavLink></p>
             </Container>
         </main>
     );

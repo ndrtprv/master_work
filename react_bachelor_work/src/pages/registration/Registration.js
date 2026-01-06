@@ -1,107 +1,29 @@
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import './Registration.css';
-import React, { useEffect, useState } from 'react';
-import {useNavigate} from 'react-router-dom';
-import { Container } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
-import { LOGIN_ROUTE, USER_ROUTE } from '../../utils/constants';
-import axios from 'axios';
-
-import { LANDING_ROUTE } from '../../utils/constants';
+import { Container, Button, Form } from 'react-bootstrap';
+import { LOGIN_ROUTE } from '../../utils/constants';
+import { useRegistration } from './useRegistration';
 
 function Registration() {
 
-    const navigate = useNavigate();
+    const { 
+        formData, 
+        onChange, 
+        signup, 
+        confirmationPassword, 
+        setConfirmationPassword, 
+        agreement, 
+        setAgreement,
+        isFormValid 
+    } = useRegistration();
 
-    const [formData, setFormData] = useState({
-        login: "",
-        phone_num: "",
-        password: "",
-        name: "",
-        surname: "",
-        bio: "",
-        avatar: undefined,
-        isAdminCandidate: "",
-        hideData: ""
-    });
-
-    const { login, phone_num, password, name, surname, bio, avatar, isAdminCandidate, hideData } = formData;
-
-    const onChange = (e) => {
-        if (e.target.name === "avatar") {
-            setFormData({ ...formData, [e.target.name]: e.target.files[0] })
-        } else {
-            setFormData({ ...formData, [e.target.name]: e.target.value })
-            if (e.target.name === "password") {
-                if (!e.target.value.match(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z\d])[A-Za-z\d\W]{8,255}$/)) {
-                    setDisableButton(true);
-                } else {
-                    setDisableButton(false);
-                }
-            }
-        }
-    };
-
-    const [disableButton, setDisableButton] = useState(true);
-
-    const [confirmationPassword, setConfirmationPassword] = useState("");
-
-    const [agreement, setAgreement] = useState(false);
-
-    axios.defaults.withCredentials = true;
-    useEffect(() => {
-        axios.get(process.env.REACT_APP_API_URL + 'user/nav')
-        .then(res => {
-            if (res.data.status) {
-                navigate(USER_ROUTE);
-            }
-        }).catch(err => {
-            alert(err.message);
-        })
-    });
-    
-    const signup = async (e) => {
-        e.preventDefault();
-        try {
-            const form = new FormData();
-            form.append('login', login);
-            form.append('phone_num', phone_num);
-            form.append('password', password);
-            form.append('name', name);
-            form.append('surname', surname);
-            form.append('bio', bio);
-            form.append('isAdminCandidate', isAdminCandidate);
-            form.append('hideData', hideData);
-
-            if (avatar) {
-                form.append('avatar', avatar);
-            }
-
-            await axios.post(process.env.REACT_APP_API_URL + 'user/signup', 
-                form,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data"
-                    }
-                }
-            ).then(response => {
-                if (response.data.status) {
-                    navigate(LANDING_ROUTE);
-                    alert("Повідомлення про підтвердження даних надіслано на вашу пошту. Дійсне 15 хвилин.");
-                }
-            }).catch(err => {
-                alert(err.message);
-            });
-        } catch (e) {
-            alert(e.response.data.message);
-        }
-    }
+    // Деструктуризація для зручності використання в JSX
+    const { login, phone_num, password, name, surname, bio } = formData;
 
     return (
         <main style={{display: 'inline-flex', flexDirection: 'column'}} >
             
-            <Form method="post">
+            <Form method="post" className='mx'>
                 <h2>Реєстрація</h2>
                 <Form.Group className="mb-3 registration-field" controlId="formBasicEmail">
                     <Form.Label><b>Email <span style={{color: "red"}}>*</span></b></Form.Label>
@@ -136,7 +58,7 @@ function Registration() {
                 <Form.Group className="mb-3 registration-field" controlId="formBasicPassword">
                     <Form.Label><b>Пароль <span style={{color: "red"}}>*</span></b></Form.Label>
                     <Form.Control type="password" placeholder="Введіть пароль" name="password" 
-                        pattern="/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z\d])[A-Za-z\d\W]{8,255}$/" 
+                        pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z\d])[A-Za-z\d\W]{8,255}$" 
                         value={password} onChange={onChange} required 
                     />
                 </Form.Group>
@@ -144,20 +66,20 @@ function Registration() {
                 <Form.Group className="mb-3 registration-field" controlId="formBasicConfirmPassword">
                     <Form.Label><b>Підтвердження пароля <span style={{color: "red"}}>*</span></b></Form.Label>
                     <Form.Control type="password" placeholder="Введіть пароль ще раз" name="confirmation_password"
-                        value={confirmationPassword} onChange={(e) => setConfirmationPassword(e.target.value)}  required 
+                        value={confirmationPassword} onChange={(e) => setConfirmationPassword(e.target.value)} required 
                     />
                 </Form.Group>
 
-                <Form.Group className="mb-3 registration-field" controlId="formBasicRole">
-                    <Form.Label><b>Роль <span style={{color: "red"}}>*</span></b></Form.Label>
-                    <Form.Check type="radio" name={`isAdminCandidate`} label="Користувач" value={false} onClick={onChange} required />
-                    <Form.Check type="radio" name={`isAdminCandidate`} label="Адмін" value={true} onClick={onChange} />
+                <Form.Group className="mb-3 registration-field">
+                    <Form.Label htmlFor={"roleUser"}><b>Роль <span style={{color: "red"}}>*</span></b></Form.Label>
+                    <Form.Check type="radio" name="isAdminCandidate" id="roleUser" label="Користувач" value={false} onClick={onChange} required />
+                    <Form.Check type="radio" name="isAdminCandidate" id="roleAdmin" label="Адмін" value={true} onClick={onChange} />
                 </Form.Group>
 
-                <Form.Group className="mb-3 registration-field" controlId="formBasicHide">
-                    <Form.Label><b>Приховати дані? <span style={{color: "red"}}>*</span></b></Form.Label>
-                    <Form.Check type="radio" name={`hideData`} label="Так" value={true} onClick={onChange} required />
-                    <Form.Check type="radio" name={`hideData`} label="Ні" value={false} onClick={onChange} />
+                <Form.Group className="mb-3 registration-field">
+                    <Form.Label htmlFor={"hideDataYes"}><b>Приховати дані? <span style={{color: "red"}}>*</span></b></Form.Label>
+                    <Form.Check type="radio" name="hideData" id="hideDataYes" label="Так" value={true} onClick={onChange} required />
+                    <Form.Check type="radio" name="hideData" id="hideDataNo" label="Ні" value={false} onClick={onChange} />
                 </Form.Group>
 
                 <Form.Group className="mb-3 registration-field" controlId="formBasicCheckbox">
@@ -166,32 +88,22 @@ function Registration() {
                     />
                 </Form.Group>
 
-                <Button variant="primary" type="submit" 
-                    disabled={
-                        login === "" || phone_num === "" ||
-                        name === "" || surname === "" ||
-                        isAdminCandidate === "" || hideData === "" ||
-                        disableButton || password !== confirmationPassword ||
-                        password === "" || confirmationPassword === "" ||
-                        !agreement
-                    } 
-                    onClick={signup}
-                >
+                <Button variant="primary" type="submit" disabled={!isFormValid} onClick={signup}>
                     Зареєструватися
                 </Button>
 
-                <Form.Group className="mt-3 registration-field" >
-                    <Form.Label><b><span style={{color: "red"}}>*</span></b> - обов'язково до заповнення</Form.Label>
-                    <Form.Label>Пароль має містити не менше 8 символів</Form.Label>
-                    <Form.Label>Пароль має містити мінімум 1 велику літеру</Form.Label>
-                    <Form.Label>Пароль має містити мінімум 1 малу літеру</Form.Label>
-                    <Form.Label>Пароль має містити мінімум 1 цифру</Form.Label>
-                    <Form.Label>Пароль має містити мінімум 1 символ</Form.Label>
+                <Form.Group className="mt-3 registration-field align-items-center" >
+                    <p className='my-1'><b><span style={{color: "red"}}>*</span></b> - обов'язково до заповнення</p>
+                    <p className='my-1'>Пароль має містити не менше 8 символів</p>
+                    <p className='my-1'>Пароль має містити мінімум 1 велику літеру</p>
+                    <p className='my-1'>Пароль має містити мінімум 1 малу літеру</p>
+                    <p className='my-1'>Пароль має містити мінімум 1 цифру</p>
+                    <p className='my-1'>Пароль має містити мінімум 1 символ</p>
                 </Form.Group>
             </Form>
 
             <Container style={{backgroundColor: 'beige', borderRadius: '0.5em', display: 'inline-flex', flexDirection: 'column'}} >
-                <p>Уже зареєстровані? <NavLink to={LOGIN_ROUTE} >Авторизуватися</NavLink></p>
+                <p className="text-center my-2">Уже зареєстровані? <NavLink to={LOGIN_ROUTE} >Авторизуватися</NavLink></p>
             </Container>
         </main>
     );
