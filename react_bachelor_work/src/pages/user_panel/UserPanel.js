@@ -1,59 +1,15 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
 import { Col, Container, Row, Button, Form, Accordion } from 'react-bootstrap';
 import Avatar from 'react-avatar';
-import { useNavigate } from 'react-router-dom';
-import { LANDING_ROUTE } from '../../utils/constants';
 import './UserPanel.css';
 import ChangeForm from '../../components/change_form/ChangeForm';
 import NoticeForm from '../../components/notice_form/NoticeForm';
 import DeleteUser from '../../components/modals/DeleteUser';
 import NoticeList from '../../components/notice_list/NoticeList';
+import { useProfile } from './useProfile';
 
 function UserPanel(props) {
 
-  const navigate = useNavigate();
-
-  const [verifiedData, setVerifiedData] = useState(true);
-  const [avatar, setAvatar] = useState(props.avatar);
-  const [userData, setUserData] = useState({});
-
-  axios.defaults.withCredentials = true;
-  useEffect(() => {
-    axios.get(process.env.REACT_APP_API_URL + 'user/profile')
-    .then(res => {
-      if (res.data.status) {
-        setUserData(res.data.user);
-          
-        if (res.data.user.verifiedAt === null) {
-          setVerifiedData(false);
-        }
-
-        if (res.data.portrait !== null) {
-          setAvatar(res.data.portrait);
-        }
-      } else {
-        navigate(LANDING_ROUTE);
-      }
-    })
-  });
-
-  const handleSend = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post(process.env.REACT_APP_API_URL + 'user/resend')
-      .then(response => {
-        console.log(response);
-        if (response.data.status) {
-          alert(response.data.message);
-        }
-      }).catch(err => {
-        alert('Не вдалося надіслати листа за вказаною адресою. ' + err.message);
-      });
-    } catch (e) {
-      alert(e.response.data.message);
-    }
-  }
+  const { userData, avatar, verifiedData, handleSend } = useProfile(props.avatar);
 
   return (
     <main>
@@ -85,33 +41,33 @@ function UserPanel(props) {
         {
           verifiedData ? 
           <>
-          <Accordion>
-            <Accordion.Item eventKey="0">
-              <Accordion.Header>Форма додавання оголошення</Accordion.Header>
-              <Accordion.Body>
-                <NoticeForm />
-              </Accordion.Body>
-            </Accordion.Item>
+            <Accordion>
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>Форма додавання оголошення</Accordion.Header>
+                <Accordion.Body>
+                  <NoticeForm />
+                </Accordion.Body>
+              </Accordion.Item>
 
-            <Accordion.Item eventKey="1">
-              <Accordion.Header>Форма додавання збору</Accordion.Header>
-              <Accordion.Body>
-                <Form action="post">
+              <Accordion.Item eventKey="1">
+                <Accordion.Header>Форма додавання збору</Accordion.Header>
+                <Accordion.Body>
+                  <Form action="post">
 
-                </Form>
-              </Accordion.Body>
-            </Accordion.Item>
+                  </Form>
+                </Accordion.Body>
+              </Accordion.Item>
 
-            <Accordion.Item eventKey="2">
-              <Accordion.Header>Форма додавання звіту</Accordion.Header>
-              <Accordion.Body>
-                <Form action="post">
+              <Accordion.Item eventKey="2">
+                <Accordion.Header>Форма додавання звіту</Accordion.Header>
+                <Accordion.Body>
+                  <Form action="post">
 
-                </Form>
-              </Accordion.Body>
-            </Accordion.Item>
-          </Accordion>
-          <NoticeList />
+                  </Form>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
+            <NoticeList />
           </>
           :
           <></>

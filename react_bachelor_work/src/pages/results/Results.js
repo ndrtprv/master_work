@@ -1,7 +1,11 @@
 import './Results.css';
 
 function Results() {
-    return (<main></main>);
+    return (
+        <main>
+            <p>Звіти</p>
+        </main>
+    );
 }
 
 export default Results;
