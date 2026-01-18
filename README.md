@@ -1,1 +1,1 @@
-# bachelor_work_final
+# Master work
