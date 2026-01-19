@@ -19,7 +19,7 @@ function Confirm() {
         .catch(err => {
             console.log(err.message);
         });
-    });
+    }, [navigate, token]);
 
     return (
         <div>Confirm</div>

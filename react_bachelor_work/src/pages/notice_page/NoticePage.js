@@ -1,25 +1,38 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { Col, Container, Row } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { Alert, Col, Container, Row, Spinner } from 'react-bootstrap';
+import { useNoticePage } from './useNoticePage';
 
 function NoticePage() {
 
-  const {id} = useParams();
-  const [notice, setNotice] = useState({});
+  const { notice, loading, error } = useNoticePage();
 
-  useEffect(() => {
-    axios.get(process.env.REACT_APP_API_URL + 'notice/getNotice/' + id)
-    .then(response => {
-      setNotice(response.data.processedNotice);
-    }).catch(err => {
-      console.log(err.message);
-    })
-  });
-
-  if (!notice || !notice.photos) {
-    return <div>Завантаження...</div>;
+  if (loading) {
+    return (
+        <Container className="mt-5 text-center">
+            <Spinner animation="border" variant="primary" />
+            <p className="mt-2">Завантаження деталей оголошення...</p>
+        </Container>
+    );
   }
+
+  if (error) {
+    return (
+        <Container className="mt-5">
+            <Alert variant="danger">Помилка: {error}</Alert>
+        </Container>
+    );
+  }
+
+  if (!notice || !notice.photos || notice.photos.length === 0) {
+    return (
+        <Container className="mt-5 text-center">
+            <Alert variant="warning">Оголошення не знайдено або воно не містить фото.</Alert>
+        </Container>
+    );
+  }
+
+  const authorName = notice.user ? `${notice.user.name} ${notice.user.surname}` : "Невідомий";
+  const authorPhone = notice.user?.phone_num || "";
+  const authorEmail = notice.user?.login || "";
 
   return (
     <main>
@@ -35,9 +48,19 @@ function NoticePage() {
               <p>Деталі:</p>
               <p>{notice.description}</p>
               <p>Контакти:</p>
-              <p>Автор: {notice.user.name + " " + notice.user.surname}</p>
-              <p><i className='fa-solid fa-phone'></i> <a href={`tel:${notice.user.phone_num}`}>{notice.user.phone_num}</a></p>
-              <p><i className="fas fa-envelope"></i> <a href={`mailto:${notice.user.login}`}>{notice.user.login}</a></p>
+              <p>Автор: {authorName}</p>
+              {authorPhone && (
+                  <p>
+                    <i className='fa-solid fa-phone me-2'></i> 
+                    <a href={`tel:${authorPhone}`} style={{textDecoration: 'none'}}>{authorPhone}</a>
+                  </p>
+              )}
+              {authorEmail && (
+                  <p>
+                    <i className="fas fa-envelope me-2"></i> 
+                    <a href={`mailto:${authorEmail}`} style={{textDecoration: 'none'}}>{authorEmail}</a>
+                  </p>
+              )}
             </Container>
           </Col>
         </Row>

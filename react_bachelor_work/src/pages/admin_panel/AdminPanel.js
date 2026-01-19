@@ -19,7 +19,7 @@ function AdminPanel() {
     .catch(err => {
       console.log(err.message);
     })
-  });
+  }, [navigate]);
 
   return (
     <main>

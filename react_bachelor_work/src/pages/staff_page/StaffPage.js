@@ -1,28 +1,35 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { Alert, Col, Container, Row, Spinner } from 'react-bootstrap';
+import { useStaffPage } from './useStaffPage';
 
 function StaffPage(props) {
 
-    const {id} = useParams();
-    const [avatar, setAvatar] = useState(props.avatar);
-    const [admin, setAdmin] = useState({});
+    const { admin, avatar, loading, error } = useStaffPage(props.avatar);
 
-    useEffect(() => {
-        axios.get(process.env.REACT_APP_API_URL + 'staff/one/' + id)
-        .then(response => {
-            setAdmin(response.data.processedAdmin);
-            if (admin.user.avatar !== null) {
-                setAvatar(admin.user.avatar);
-            }
-        }).catch(err => {
-            console.log(err.message);
-        })
-    });
+    const defaultBio = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quis nisl sollicitudin, accumsan dui vel, facilisis nulla. Quisque eleifend ornare elit suscipit tristique. Vestibulum justo tortor, tincidunt vitae orci non, porttitor rhoncus tellus. Curabitur non semper massa. Nullam feugiat iaculis.";
+
+    if (loading) {
+        return (
+            <Container className="mt-5 text-center">
+                <Spinner animation="border" variant="primary" />
+                <p className="mt-2">Завантаження профілю...</p>
+            </Container>
+        );
+    }
+
+    if (error) {
+        return (
+            <Container className="mt-5">
+                <Alert variant="danger">Помилка: {error}</Alert>
+            </Container>
+        );
+    }
 
     if (!admin || !admin.user) {
-        return <div>Завантаження...</div>;
+        return (
+            <Container className="mt-5 text-center">
+                <Alert variant="warning">Користувача не знайдено.</Alert>
+            </Container>
+        );
     }
 
     return (
@@ -43,9 +50,7 @@ function StaffPage(props) {
                                     ?
                                     admin.user.bio
                                     :
-                                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quis nisl sollicitudin, accumsan dui vel, facilisis nulla. " +
-                                    "Quisque eleifend ornare elit suscipit tristique. Vestibulum justo tortor, tincidunt vitae orci non, porttitor rhoncus tellus." + 
-                                    " Curabitur non semper massa. Nullam feugiat iaculis."
+                                    defaultBio
                                 }
                             </p>
                             <p>Контакти:</p>

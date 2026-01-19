@@ -1,22 +1,28 @@
-import { useEffect, useState } from 'react';
 import './Staff.css';
-import axios from 'axios';
-import { Button, Card, CardBody, CardImg, CardText, CardTitle, Col, Container, Row } from 'react-bootstrap';
+import { Alert, Button, Card, CardBody, CardImg, CardText, CardTitle, Col, Container, Row, Spinner } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { STAFF_ROUTE } from '../../utils/constants';
+import { useStaff } from './useStaff';
 
 function Staff(props) {
 
-    const [admins, setAdmins] = useState([]);
+    const { admins, loading, error } = useStaff();
 
-    useEffect(() => {
-        axios.get(process.env.REACT_APP_API_URL + 'staff/main')
-        .then(response => {
-            setAdmins(response.data.adminsProcessed);
-        }).catch(err => {
-            console.log(err.message);
-        });
-    });
+    if (loading) {
+        return (
+            <Container className='d-flex justify-content-center mt-5'>
+                <Spinner animation="border" variant="primary" />
+            </Container>
+        );
+    }
+
+    if (error) {
+        return (
+            <Container className='d-flex justify-content-center mt-5'>
+                <Alert variant="danger">Помилка: {error}</Alert>
+            </Container>
+        );
+    }
 
     return (
         <main>
