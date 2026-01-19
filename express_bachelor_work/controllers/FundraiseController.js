@@ -11,19 +11,35 @@ class FundraiseController {
     }
 
     async updateFundraise(req, res) {
+        try {
 
+        } catch (e) {
+            next(ApiError.badRequest(e.message));
+        }
     }
 
     async deleteFundraise(req, res) {
+        try {
 
+        } catch (e) {
+            next(ApiError.badRequest(e.message));
+        }
     }
 
     async getFundraises(req, res) {
+        try {
 
+        } catch (e) {
+            next(ApiError.badRequest(e.message));
+        }
     }
 
     async getFundraise(req, res) {
-        
+        try {
+
+        } catch (e) {
+            next(ApiError.badRequest(e.message));
+        }
     }
 }
 

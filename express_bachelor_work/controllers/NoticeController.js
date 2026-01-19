@@ -60,7 +60,16 @@ class NoticeController {
     }
 
     async updateNotice(req, res) {
+        const { type, kind, description } = req.body;
+        const newFile = req.file;
+        const accessToken = req.cookies.accessToken;
 
+        try {
+            
+            return res.json({status: true, message: "Оголошення оновлено." })
+        } catch (e) {
+            next(ApiError.badRequest(e.message))
+        }
     }
 
     async deleteNotice(req, res, next) {

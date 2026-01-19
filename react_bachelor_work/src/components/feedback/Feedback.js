@@ -1,40 +1,18 @@
-import axios from "axios";
-import { useState } from "react";
 import { Container, Form } from "react-bootstrap";
+import { useFeedback } from "./useFeedback";
 
 function Feedback(props) {
 
-    const [feedbackData, setFeedbackData] = useState({
-        name: "",
-        email: "",
-        topic: "",
-        text: "",
-    });
+    const { 
+        feedbackData, 
+        onChange, 
+        handleSendMessage, 
+        isFormValid 
+    } = useFeedback();
     
     const { name, email, topic, text } = feedbackData;
-    
-    const onChange = (e) => {
-        setFeedbackData({ ...feedbackData, [e.target.name]: e.target.value });
-    };
 
     const classNameContainer = !props.isSmall ? props.classNameContainer : "";
-
-    const handleSendMessage = async (e) => {
-        e.preventDefault();
-        try {
-            await axios.post(process.env.REACT_APP_API_URL + 'feedback/send', feedbackData)
-            .then(response => {
-                console.log(response);
-                if (response.data.status) {
-                    alert(response.data.message);
-                }
-            }).catch(err => {
-                alert(err.message);
-            });
-        } catch (e) {
-            alert(e.response.data.message);
-        }
-    }
 
     return (
         <Container className={classNameContainer}>
@@ -78,7 +56,7 @@ function Feedback(props) {
         
                 <Form.Group className="mt-2">
                     <Form.Control type="submit" name="submit" id="submit" className="btn btn-primary btn-block" 
-                        disabled={name === "" || email === "" || topic === "" || text === ""} value="Відправити" 
+                        disabled={!isFormValid} value="Відправити" 
                     />
                 </Form.Group>
 

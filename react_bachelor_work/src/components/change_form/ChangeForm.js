@@ -1,37 +1,16 @@
-import axios from 'axios';
-import React, {useState} from 'react';
 import { Col, Container, Row, Button, Form } from 'react-bootstrap';
+import { useChangeForm } from './useChangeForm';
 
 function ChangeForm(props) {
 
-    const [formData, setFormData] = useState({
-        phone_num: "",
-        name: "",
-        surname: "",
-        bio: ""
-    });
+    const { 
+        formData, 
+        onChange, 
+        update, 
+        isUpdateDisabled 
+    } = useChangeForm(props.userData);
 
     const { phone_num, name, surname, bio } = formData;
-
-    const onChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value })
-    };
-
-    const update = async (e) => {
-        e.preventDefault();
-        try {
-            axios.post(process.env.REACT_APP_API_URL + 'user/updateData', formData)
-            .then(response => {
-                if (response.data.status) {
-                    alert(response.data.message);
-                }
-            }).catch(err => {
-                console.log(err.message);
-            })
-        } catch (e) {
-          alert(e.response.data.message);
-        }
-    }
 
     return (
         <Form action="post" className="m-2">
@@ -62,16 +41,7 @@ function ChangeForm(props) {
                     </Col>
                 </Row>
                 <Row>
-                    <Button variant="primary" type="submit" 
-                        disabled={ (
-                            formData.phone_num === props.userData.phone_num &&
-                            formData.name === props.userData.name && 
-                            formData.surname === props.userData.surname &&
-                            formData.bio === props.userData.bio
-                            ) || phone_num === "" || name === "" || surname === ""
-                        } 
-                        onClick={update}
-                    >
+                    <Button variant="primary" type="submit" disabled={ isUpdateDisabled } onClick={update}>
                         Оновити дані
                     </Button>
 
@@ -82,6 +52,6 @@ function ChangeForm(props) {
             </Container>
         </Form>
     )
-}
+};
 
-export default ChangeForm
+export default ChangeForm;

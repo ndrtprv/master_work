@@ -1,4 +1,3 @@
-import React from 'react'
 import { Accordion, Container, Pagination} from 'react-bootstrap';
 
 function FundCheckList() {
@@ -6,9 +5,9 @@ function FundCheckList() {
 
     return (
         <Container className='mt-2 p-1' style={{borderStyle: 'solid', borderWidth: '0.2em', borderColor: 'gray'}}>
-            <div className="mt-2">
+            <Container className="mt-2">
                 <h5>Отримані заявки</h5>
-            </div>
+            </Container>
             <Accordion>
                 
             </Accordion>
