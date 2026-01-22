@@ -3,7 +3,7 @@ import Avatar from 'react-avatar';
 import './UserPanel.css';
 import ChangeForm from '../../components/change_form/ChangeForm';
 import NoticeForm from '../../components/notice_form/NoticeForm';
-import DeleteUser from '../../components/modals/DeleteUser';
+import DeleteUser from '../../components/modals/delete_user_modal/DeleteUser';
 import NoticeList from '../../components/notice_list/NoticeList';
 import { useProfile } from './useProfile';
 

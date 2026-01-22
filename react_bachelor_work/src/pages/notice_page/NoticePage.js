@@ -35,13 +35,13 @@ function NoticePage() {
   const authorEmail = notice.user?.login || "";
 
   return (
-    <main>
-      <Container className='mt-5'>
-        <Row>
+    <main className="align-items-center">
+      <Container className='my-3 mx-auto'>
+        <Row className='justify-content-around'>
           <Col className="d-flex flex-column align-items-center justify-content-center" md={4} >
-            <img src={`data:${notice.photos[0].contentType};base64,${notice.photos[0].src_photo}`} alt={notice.id + ' ' + notice.typeDescription} style={{maxWidth: '22em'}} />
+            <img src={`data:${notice.photos[0].contentType};base64,${notice.photos[0].src_photo}`} alt={notice.id + ' ' + notice.typeDescription} style={{maxWidth: '25em'}} />
           </Col>
-          <Col md >
+          <Col md={4} >
             <Container className="justify-content-center">
               <h3>{notice.typeDescription}</h3>
               <h5>{notice.kind}</h5>

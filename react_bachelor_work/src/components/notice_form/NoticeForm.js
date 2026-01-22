@@ -16,7 +16,7 @@ function NoticeForm() {
     const { type, kind, description } = formData;
 
     return (
-        <Form action="post">
+        <Form method="post">
             <Form.Group className="mb-3 registration-field" controlId="formBasicType">
                 <Form.Label><b>Тип допомоги <span style={{color: "red"}}>*</span></b></Form.Label>
                 <Form.Check id="typeUAF" type="radio" name={`type`} label="Допомога ЗСУ" value={"Допомога ЗСУ"} onClick={onChange} required />

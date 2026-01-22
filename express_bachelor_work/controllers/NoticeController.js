@@ -74,7 +74,7 @@ class NoticeController {
 
     async deleteNotice(req, res, next) {
 
-        const {id} = req.body;
+        const {id} = req.params;
 
         try {
             const notice = await Notice.findOne({where: {id: id}});

@@ -1,5 +1,7 @@
-import { Accordion, Button, Col, Container, Pagination, Row, Spinner, Alert } from 'react-bootstrap';
+import { Accordion,  Col, Container, Pagination, Row, Spinner, Alert } from 'react-bootstrap';
 import { useNoticeList } from './useNoticeList';
+import UpdateNotice from '../modals/update_notice_modal/UpdateNotice';
+import DeleteNotice from '../modals/delete_notice_modal/DeleteNotice';
 
 function NoticeList() {
     const { 
@@ -8,8 +10,7 @@ function NoticeList() {
         activePage, 
         loading, 
         error, 
-        changePage, 
-        deleteNotice 
+        changePage
     } = useNoticeList();
 
     const handleClickPage = (e) => {
@@ -17,11 +18,6 @@ function NoticeList() {
         if (!isNaN(pageNumber)) {
             changePage(pageNumber);
         }
-    };
-
-    const handleDelete = (e) => {
-        const id = parseInt(e.target.name);
-        deleteNotice(id);
     };
 
     if (loading && notices.length === 0) {
@@ -54,9 +50,9 @@ function NoticeList() {
 
     return (
         <Container className='mt-2 p-1' style={{borderStyle: 'solid', borderWidth: '0.2em', borderColor: 'gray'}}>
-            <div className="mt-2 ms-2">
+            <Container className="mt-2 ms-2">
                 <h5>Ваші оголошення</h5>
-            </div>
+            </Container>
             
             <Accordion>
                 {notices.map((notice, index) =>
@@ -81,13 +77,12 @@ function NoticeList() {
                                     <Col md={6}>
                                         <p><strong>Тип допомоги:</strong> {notice.typeDescription}</p>
                                         <p><strong>Вид допомоги:</strong> {notice.kind}</p>
-                                        <div className="mb-3">
+                                        <Container className="mb-3">
                                             <strong>Опис:</strong>
                                             <p style={{whiteSpace: 'pre-wrap'}}>{notice.description}</p>
-                                        </div>
-                                        <Button variant='warning' name={notice.id} onClick={handleDelete}>
-                                            Видалити оголошення
-                                        </Button>
+                                        </Container>
+                                        <UpdateNotice name={notice.id} />
+                                        <DeleteNotice id={notice.id} onDeleteSuccess={() => changePage(activePage)}/>
                                     </Col>
                                 </Row>
                             </Container>

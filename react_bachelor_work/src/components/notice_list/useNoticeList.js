@@ -5,12 +5,10 @@ export const useNoticeList = () => {
     const [notices, setNotices] = useState([]);
     const [pages, setPages] = useState([]);
     const [activePage, setActivePage] = useState(1);
-    
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     axios.defaults.withCredentials = true;
-
     const fetchNotices = async (page) => {
         setLoading(true);
         setError(null);
@@ -47,25 +45,12 @@ export const useNoticeList = () => {
         setActivePage(pageNumber);
     };
 
-    const deleteNotice = async (id) => {
-        if (!window.confirm("Ви впевнені, що хочете видалити це оголошення?")) return;
-
-        try {
-            const response = await axios.post(process.env.REACT_APP_API_URL + 'notice/deleteNotice', { id });
-            alert(response.data.message);
-            fetchNotices(activePage);
-        } catch (err) {
-            alert("Помилка видалення: " + (err.response?.data?.message || err.message));
-        }
-    };
-
     return {
         notices,
         pages,
         activePage,
         loading,
         error,
-        changePage,
-        deleteNotice
+        changePage
     };
 };

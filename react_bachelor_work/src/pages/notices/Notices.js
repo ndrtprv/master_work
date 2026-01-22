@@ -44,10 +44,10 @@ function Notices() {
       {
         notices.length !== 0 ?
         <>
-          <Row style={{borderStyle: 'solid', borderColor: 'gray', borderWidth: '0.15em', margin: '3em', padding: '0.5em'}}>
+          <Row className="m-6 p-5" style={{borderWidth: '0.15em'}}>
             {notices.map((notice, index) => 
               <Col key={index} style={{justifyContent: 'space-around', alignContent: 'center', margin: '0.15em'}} lg={4}>
-                <Card style={{ width: '13rem', alignContent: 'center' }} >
+                <Card style={{ alignContent: 'center' }} >
                   <CardImg variant="top" src={`data:${notice.photos[0].contentType};base64,${notice.photos[0].src_photo}`} alt={notice.id + ' ' + notice.kind} />
                   <Card.Body>
                     <Card.Title>{notice.kind}</Card.Title>
