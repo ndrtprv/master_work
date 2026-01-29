@@ -1,5 +1,6 @@
-import { Alert, Col, Container, Row, Spinner } from 'react-bootstrap';
+import { Alert, Carousel, Col, Container, Row, Spinner } from 'react-bootstrap';
 import { useNoticePage } from './useNoticePage';
+import './NoticePage.css';
 
 function NoticePage() {
 
@@ -22,10 +23,10 @@ function NoticePage() {
     );
   }
 
-  if (!notice || !notice.photos || notice.photos.length === 0) {
+  if (!notice) {
     return (
         <Container className="mt-5 text-center">
-            <Alert variant="warning">Оголошення не знайдено або воно не містить фото.</Alert>
+            <Alert variant="warning">Оголошення не знайдено.</Alert>
         </Container>
     );
   }
@@ -39,7 +40,26 @@ function NoticePage() {
       <Container className='my-3 mx-auto'>
         <Row className='justify-content-around'>
           <Col className="d-flex flex-column align-items-center justify-content-center" md={4} >
-            <img src={`data:${notice.photos[0].contentType};base64,${notice.photos[0].src_photo}`} alt={notice.id + ' ' + notice.typeDescription} style={{maxWidth: '25em'}} />
+            <Carousel 
+              interval={null} 
+              variant="dark" 
+              style={{width: '100%', maxWidth: '30em'}}
+              controls={notice.photos.length > 1}
+              indicators={notice.photos.length > 1}
+            >
+              {notice.photos.map((photo, index) => (
+                <Carousel.Item key={index}>
+                  <div className='photo_placeholder'>
+                    <img 
+                      className="d-block w-100"
+                      src={`data:${photo.contentType};base64,${photo.src_photo}`} 
+                      alt={notice.kind} 
+                      style={{ maxHeight: '100%', objectFit: 'contain' }} 
+                    />
+                  </div>
+                </Carousel.Item>
+              ))}
+            </Carousel>
           </Col>
           <Col md={4} >
             <Container className="justify-content-center">

@@ -1,0 +1,10 @@
+.photo_placeholder {
+    height: '450px';
+    background-color: '#f8f9fa';
+    display: 'flex';
+    align-items: 'center'; 
+    justify-content: 'center';
+    border-radius: '8px';
+    overflow: 'hidden';
+    border: '1px solid #dee2e6'
+}

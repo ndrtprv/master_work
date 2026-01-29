@@ -39,12 +39,19 @@ function NoticeForm() {
 
             <Form.Group className="mb-3 registration-field" controlId="formBasicDescription">
                 <Form.Label><b>Опис <span style={{color: "red"}}>*</span></b></Form.Label>
-                <Form.Control as="textarea" type="text" style={{resize: "none"}} placeholder="Введіть опис допомоги" name="description" value={description} onChange={onChange} />
+                <Form.Control 
+                    as="textarea" 
+                    type="text" 
+                    style={{resize: "none"}} 
+                    placeholder="Введіть опис допомоги" 
+                    name="description" value={description} 
+                    onChange={onChange} required
+                />
             </Form.Group>
 
             <Form.Group className="mb-3 registration-field" controlId="formBasicPhoto">
-                <Form.Label><b>Фото (лише одне) <span style={{color: "red"}}>*</span></b></Form.Label>
-                <Form.Control type="file" accept="image/*" alt="Оберіть фото" name="photo" onChange={onChange} />
+                <Form.Label><b>Фото (можна обрати до 10 штук) <span style={{color: "red"}}>*</span></b></Form.Label>
+                <Form.Control type="file" accept="image/*" multiple alt="Оберіть фото" name="photos" onChange={onChange} required />
             </Form.Group>
 
             <Form.Group className="mb-3 registration-field" controlId="formBasicCheckbox">

@@ -1,7 +1,8 @@
-import { Accordion,  Col, Container, Pagination, Row, Spinner, Alert } from 'react-bootstrap';
+import { Accordion,  Col, Container, Pagination, Row, Spinner, Alert, Carousel } from 'react-bootstrap';
 import { useNoticeList } from './useNoticeList';
 import UpdateNotice from '../modals/update_notice_modal/UpdateNotice';
 import DeleteNotice from '../modals/delete_notice_modal/DeleteNotice';
+import './NoticeList.css';
 
 function NoticeList() {
     const { 
@@ -64,15 +65,26 @@ function NoticeList() {
                             <Container>
                                 <Row>
                                     <Col md={6}>
-                                        {notice.photos && notice.photos.map((photo, i) =>
-                                            <img 
-                                                key={i} 
-                                                src={`data:${photo.contentType};base64,${photo.src_photo}`} 
-                                                alt={notice.kind} 
-                                                className="img-fluid mb-2 rounded" 
-                                                style={{maxHeight: '300px', objectFit: 'cover'}} 
-                                            />
-                                        )}
+                                        <Carousel 
+                                            interval={null}
+                                            variant="dark"
+                                            controls={notice.photos.length > 1}
+                                            indicators={notice.photos.length > 1}
+                                            style={{ minHeight: '100px' }}
+                                        >
+                                            {notice.photos.map((photo, i) =>
+                                                <Carousel.Item key={i}>
+                                                    <div className='photo_placeholder'>
+                                                        <img 
+                                                            src={`data:${photo.contentType};base64,${photo.src_photo}`} 
+                                                            alt={notice.kind} 
+                                                            className="img-fluid mb-2 rounded" 
+                                                            style={{maxHeight: '300px', objectFit: 'cover'}} 
+                                                        />
+                                                    </div>
+                                                </Carousel.Item>
+                                            )}
+                                        </Carousel>
                                     </Col>
                                     <Col md={6}>
                                         <p><strong>Тип допомоги:</strong> {notice.typeDescription}</p>
@@ -93,7 +105,6 @@ function NoticeList() {
                 )}
             </Accordion>
 
-            {/* Показуємо пагінацію тільки якщо сторінок більше 1 */}
             {pages.length > 1 && (
                 <Pagination className="justify-content-center mt-3">
                     {pages.map((page, index) => 

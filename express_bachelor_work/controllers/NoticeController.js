@@ -23,7 +23,7 @@ class NoticeController {
 
     async addNotice(req, res, next) {
         const { type, kind, description } = req.body;
-        const file = req.file;
+        const files = req.files;
         const accessToken = req.cookies.accessToken;
 
         try {
@@ -31,6 +31,9 @@ class NoticeController {
             
             if (!type || !kind || !description) {
                 return next(ApiError.badRequest("Не введено дані!"));
+            }
+            if (!files || files.length === 0) {
+                return next(ApiError.badRequest("Додайте хоча б одне фото!"));
             }
 
             let chosenType = 0
@@ -45,13 +48,17 @@ class NoticeController {
 
             const newNotice = await Notice.create({ type: chosenType, kind, description, createdAt, user_id: user.id });
 
-            await Photo.create({
-                src_photo: file.buffer,
-                contentType: file.mimetype,
-                notice_id: newNotice.id,
-                fundraise_id: null,
-                result_id: null
+            const photoPromises = files.map(file => {
+                return Photo.create({
+                    src_photo: file.buffer,
+                    contentType: file.mimetype,
+                    notice_id: newNotice.id,
+                    fundraise_id: null,
+                    result_id: null
+                });
             });
+
+            await Promise.all(photoPromises);
 
             return res.json({status: true, message: "Оголошення додане." })
         } catch (e) {

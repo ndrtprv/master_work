@@ -10,29 +10,27 @@ export const useNoticeForm = () => {
         type: "",
         kind: "",
         description: "",
-        photo: undefined
+        photos: []
     });
 
     const [agreement, setAgreement] = useState(false);
     
     const [currentOptions, setCurrentOptions] = useState([]);
 
-    const { type, kind, description, photo } = formData;
+    const { type, kind, description, photos } = formData;
 
     const onChange = (e) => {
         const { name, value, files } = e.target;
 
-        if (name === "photo") {
-            setFormData(prev => ({ ...prev, photo: files[0] }));
+        if (name === "photos") {
+            setFormData(prev => ({ ...prev, photos: Array.from(files) }));
         } 
         else if (name === "type") {
-            // ЛОГІКА: Якщо змінили ТИП допомоги
             setFormData(prev => ({ 
                 ...prev, 
                 type: value, 
-                kind: "" // 1. Очищаємо "вид допомоги", бо старий вже не актуальний
+                kind: ""
             }));
-            // 2. Оновлюємо список доступних опцій
             setCurrentOptions(OPTIONS_MAP[value] || []);
         } 
         else {
@@ -50,8 +48,10 @@ export const useNoticeForm = () => {
             form.append('kind', kind);
             form.append('description', description);
 
-            if (photo) {
-                form.append('photo', photo);
+            if (photos && photos.length > 0) {
+                photos.forEach(file => {
+                    form.append('photos', file); 
+                });
             }
 
             const response = await axios.post(process.env.REACT_APP_API_URL + 'notice/add', form, {
@@ -61,7 +61,6 @@ export const useNoticeForm = () => {
             if (response.data.status) {
                 alert(response.data.message);
                 navigate(USER_ROUTE);
-                // Оновлюємо кеш оголошень
                 window.location.reload(); 
             }
         } catch (err) {
@@ -74,7 +73,7 @@ export const useNoticeForm = () => {
         type !== "" && 
         kind !== "" && 
         description !== "" && 
-        photo !== undefined && 
+        photos.length > 0 && 
         agreement
     );
 

@@ -6,7 +6,7 @@ const router = new Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-router.post('/add', upload.single('photo'), noticeController.addNotice);
+router.post('/add', upload.array('photos', 10), noticeController.addNotice);
 router.post('/getUsersNotices', noticeController.getUsersNotices);
 router.post('/getNotices', noticeController.getNotices);
 router.delete('/deleteNotice/:id', noticeController.deleteNotice);
