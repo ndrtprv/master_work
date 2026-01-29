@@ -39,7 +39,7 @@ function NoticeForm() {
 
             <Form.Group className="mb-3 registration-field" controlId="formBasicDescription">
                 <Form.Label><b>Опис <span style={{color: "red"}}>*</span></b></Form.Label>
-                <Form.Control as="textarea" type="text" resize="none" placeholder="Введіть опис допомоги" name="description" value={description} onChange={onChange} />
+                <Form.Control as="textarea" type="text" style={{resize: "none"}} placeholder="Введіть опис допомоги" name="description" value={description} onChange={onChange} />
             </Form.Group>
 
             <Form.Group className="mb-3 registration-field" controlId="formBasicPhoto">

@@ -5,6 +5,12 @@ import axios from "axios";
 export const useUpdateNotice = (props) => {
     const { show, handleClose, notice, refreshList } = props;
 
+    const [initialData, setInitialData] = useState({
+        type: "",
+        kind: "",
+        description: ""
+    });
+
     const [formData, setFormData] = useState({
         id: "",
         type: "",
@@ -17,7 +23,13 @@ export const useUpdateNotice = (props) => {
 
     useEffect(() => {
         if (notice && show) {
-            const initialType = notice.typeDescription || (notice.type === 0 ? "Допомога ЗСУ" : "Гуманітарна допомога");
+            const initialType = (notice.type === 0 || notice.type === "0") ? "Допомога ЗСУ" : "Гуманітарна допомога";
+
+            setInitialData({
+                type: initialType,
+                kind: notice.kind || "",
+                description: notice.description || ""
+            });
             
             setFormData({
                 id: notice.id,
@@ -50,6 +62,18 @@ export const useUpdateNotice = (props) => {
         }
     };
 
+    const isUpdateDisabled = (
+        !formData.type || 
+        !formData.kind || 
+        !formData.description ||
+        (
+            formData.type === initialData.type &&
+            formData.kind === initialData.kind &&
+            formData.description === initialData.description &&
+            formData.photo === undefined
+        )
+    );
+
     const updateNotice = async () => {
         try {
             const form = new FormData();
@@ -61,7 +85,7 @@ export const useUpdateNotice = (props) => {
                 form.append('photo', formData.photo);
             }
 
-            const response = await axios.post(process.env.REACT_APP_API_URL + 'notice/updateNotice/' + formData.id, form, {
+            const response = await axios.put(process.env.REACT_APP_API_URL + 'notice/updateNotice/' + formData.id, form, {
                 headers: { "Content-Type": "multipart/form-data" }
             });
 
@@ -80,6 +104,7 @@ export const useUpdateNotice = (props) => {
         formData,
         currentOptions,
         onChange,
-        updateNotice
+        updateNotice,
+        isUpdateDisabled
     };
 };

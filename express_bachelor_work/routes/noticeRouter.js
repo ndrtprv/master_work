@@ -10,7 +10,7 @@ router.post('/add', upload.single('photo'), noticeController.addNotice);
 router.post('/getUsersNotices', noticeController.getUsersNotices);
 router.post('/getNotices', noticeController.getNotices);
 router.delete('/deleteNotice/:id', noticeController.deleteNotice);
-router.put('/updateNotice/:id', noticeController.updateNotice);
+router.put('/updateNotice/:id', upload.single('photo'), noticeController.updateNotice);
 router.get('/getNotice/:id', noticeController.getNotice);
 
 module.exports = router;

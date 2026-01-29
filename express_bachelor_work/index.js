@@ -13,7 +13,7 @@ const PORT = process.env.PORT;
 const app = express();
 app.use(cors({
     origin: [process.env.ORIGIN],
-    methods: ["GET", "POST", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
 app.options('*', cors());

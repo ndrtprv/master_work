@@ -81,8 +81,10 @@ function NoticeList() {
                                             <strong>Опис:</strong>
                                             <p style={{whiteSpace: 'pre-wrap'}}>{notice.description}</p>
                                         </Container>
-                                        <UpdateNotice name={notice.id} />
-                                        <DeleteNotice id={notice.id} onDeleteSuccess={() => changePage(activePage)}/>
+                                        <Container className="mb-3 d-flex flex-column">
+                                            <UpdateNotice notice={notice} refreshList={() => changePage(activePage)} />
+                                            <DeleteNotice id={notice.id} onDeleteSuccess={() => changePage(activePage)}/>
+                                        </Container>
                                     </Col>
                                 </Row>
                             </Container>

@@ -12,7 +12,7 @@ function DeleteNotice({ id, onDeleteSuccess }) {
 
     return (
         <>
-            <Button className='btn-warning' onClick={handleShow}>Видалити оголошення</Button>
+            <Button variant="warning" className='mx-4' onClick={handleShow}><b>Видалити оголошення</b></Button>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Видалення оголошення</Modal.Title>

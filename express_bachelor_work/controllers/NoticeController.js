@@ -59,13 +59,49 @@ class NoticeController {
         }
     }
 
-    async updateNotice(req, res) {
+    async updateNotice(req, res, next) {
         const { type, kind, description } = req.body;
+        const { id } = req.params;
         const newFile = req.file;
-        const accessToken = req.cookies.accessToken;
 
         try {
-            
+
+            const currentNotice = await Notice.findOne({where: {id: id}})
+
+            let chosenType = 0
+            if (type === "Допомога ЗСУ") {
+                chosenType = 0;
+            } else {
+                chosenType = 1;
+            }
+
+            if (chosenType !== currentNotice.type) {
+                await Notice.update({type: chosenType}, {where: {id: id}});
+            }
+            if (kind !== currentNotice.kind) {
+                await Notice.update({kind: kind}, {where: {id: id}});
+            }
+            if (description !== currentNotice.description) {
+                await Notice.update({description: description}, {where: {id: id}});
+            }
+
+            if (newFile) {
+                const currentPhoto = await Photo.findOne({ where: { notice_id: id } });
+
+                if (currentPhoto) {
+                    await currentPhoto.update({
+                        src_photo: newFile.buffer,
+                        contentType: newFile.mimetype,
+                    });
+                } else {
+                    await Photo.create({
+                        src_photo: newFile.buffer,
+                        contentType: newFile.mimetype,
+                        notice_id: id
+                    });
+                }
+            }
+
             return res.json({status: true, message: "Оголошення оновлено." })
         } catch (e) {
             next(ApiError.badRequest(e.message))

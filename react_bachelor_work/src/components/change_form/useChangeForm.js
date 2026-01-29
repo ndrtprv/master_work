@@ -9,7 +9,6 @@ export const useChangeForm = (userData) => {
         bio: ""
     });
 
-    // Автозаповнення полів, коли приходять дані користувача (props)
     useEffect(() => {
         if (userData) {
             setFormData({
@@ -33,14 +32,11 @@ export const useChangeForm = (userData) => {
             if (response.data.status) {
                 alert(response.data.message);
                 
-                // ВАЖЛИВО: Очищаємо кеш профілю, щоб UserPanel завантажив нові дані
                 localStorage.removeItem('user_profile_cache');
                 
-                // Опціонально: перезавантажити сторінку, щоб побачити зміни
                 window.location.reload(); 
             }
         } catch (error) {
-            // Обробка помилок
             const message = error.response?.data?.message || error.message;
             if (error.response?.data?.message) {
                  alert(error.response.data.message);
@@ -50,9 +46,6 @@ export const useChangeForm = (userData) => {
         }
     };
 
-    // Логіка блокування кнопки:
-    // 1. Якщо дані ідентичні тим, що в БД (нічого не змінилось)
-    // 2. АБО якщо обов'язкові поля порожні
     const isUpdateDisabled = (
         (
             formData.phone_num === userData.phone_num &&
