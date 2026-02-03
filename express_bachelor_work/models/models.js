@@ -47,7 +47,7 @@ const Fundraise = sequelize.define('fundraise', {
 
 const Result = sequelize.define('result', {
     id: {type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true},
-    src_photo: {type: DataTypes.BLOB, allowNull: false},
+    title: {type: DataTypes.STRING, allowNull: false},
     description: {type: DataTypes.STRING, allowNull: false},
     createdAt: {type: DataTypes.DATE, allowNull: false}
 });

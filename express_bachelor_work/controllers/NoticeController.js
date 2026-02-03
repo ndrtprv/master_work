@@ -1,23 +1,7 @@
 const ApiError = require("../error/ApiError");
 const jwt = require('jsonwebtoken');
 const { Notice, Photo, User } = require("../models/models");
-
-function cipherData(data, type) {
-    if (!data) return data;
-
-    switch(type) {
-        case 'login':
-            const [localPart, domain] = data.split('@');
-            return localPart[0] + '*'.repeat(localPart.length - 1) + '@' + domain;
-        case 'phone_num':
-            return data[0] + data[1] + '*'.repeat(data.length - 3) + data.slice(-2);
-        case 'name':
-        case 'surname':
-            return data[0] + '*'.repeat(data.length - 1);
-        default:
-            return data;
-    }
-}
+const { cipherData } = require("../middleware/CipherDataMiddleware");
 
 class NoticeController {
 
@@ -137,7 +121,7 @@ class NoticeController {
 
     async getNotices(req, res, next) {
         
-        const {activePage} = req.body;
+        const { activePage } = req.query;
 
         console.log("Active page: " + JSON.stringify(req.activePage))
         let limit = 5;
@@ -205,7 +189,7 @@ class NoticeController {
     }
 
     async getUsersNotices(req, res, next) {
-        const {activePage} = req.body;
+        const { activePage } = req.query;
         const accessToken = req.cookies.accessToken;
 
         console.log("Active page: " + JSON.stringify(req.activePage))

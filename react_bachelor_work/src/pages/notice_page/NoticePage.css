@@ -8,3 +8,10 @@
     overflow: 'hidden';
     border: '1px solid #dee2e6'
 }
+
+.photo_placeholder img { 
+    max-height: '100%';
+    max-width: '100%';
+    object-fit: 'contain';
+    margin: 'auto'
+}

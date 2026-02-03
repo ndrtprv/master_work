@@ -54,7 +54,6 @@ function NoticePage() {
                       className="d-block w-100"
                       src={`data:${photo.contentType};base64,${photo.src_photo}`} 
                       alt={notice.kind} 
-                      style={{ maxHeight: '100%', objectFit: 'contain' }} 
                     />
                   </div>
                 </Carousel.Item>
